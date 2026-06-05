@@ -24,13 +24,16 @@ val DynapufMenu = FontFamily(
 )
 
 @Composable
-fun MenuCard(text: String,onClick:()-> Unit) {
+fun MenuCard(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+        .width(300.dp)
+        .height(300.dp)
+) {
 
     Card(
-        modifier = Modifier
-            .width(300.dp)
-            .height(300.dp)
-
+        modifier = modifier
             .clickable {
                 onClick()
             },

@@ -107,6 +107,10 @@ fun DetailHurufScreen(
                     item.soundRes
                 )
 
+                mediaPlayer.setOnCompletionListener {
+                    it.release()
+                }
+
                 mediaPlayer.start()
 
             }
