@@ -21,6 +21,7 @@ import com.example.pelatihankode.ui.screen.BelajarScreen
 import com.example.pelatihankode.ui.screen.ComingSoonScreen
 import com.example.pelatihankode.ui.screen.MenuScreen
 import com.example.pelatihankode.ui.screen.DetailHurufScreen
+import com.example.pelatihankode.ui.screen.QuizScreen
 import com.example.pelatihankode.ui.screen.RiwayatScreen
 import com.example.pelatihankode.ui.screen.SiswaScreen
 import com.example.pelatihankode.ui.theme.PelatihanKODETheme
@@ -40,10 +41,21 @@ class MainActivity : ComponentActivity() {
         val siswaDao = database.siswaDao()
         val riwayatDao = database.riwayatDao()
 
+
         setContent {
 
             PelatihanKODETheme {
+                var bpmQuiz by remember {
+                    mutableStateOf<Int?>(null)
+                }
 
+                var spo2Quiz by remember {
+                    mutableStateOf<Int?>(null)
+                }
+
+                var kondisiQuiz by remember {
+                    mutableStateOf<String?>(null)
+                }
                 val navController = rememberNavController()
                 val coroutineScope = rememberCoroutineScope()
                 var hurufItems by remember { mutableStateOf(defaultHurufList) }
@@ -135,8 +147,21 @@ class MainActivity : ComponentActivity() {
                         val selectedSiswa = siswaItems.find { it.id == siswaId }
 
                         MenuScreen(
+
                             navController = navController,
-                            siswa = selectedSiswa
+
+                            siswa = selectedSiswa,
+
+                            onMulaiQuiz = { bpm, spo2, kondisi ->
+
+                                bpmQuiz = bpm
+                                spo2Quiz = spo2
+                                kondisiQuiz = kondisi
+
+                                navController.navigate(
+                                    "quiz/${selectedSiswa?.id}"
+                                )
+                            }
                         )
                     }
 
@@ -147,8 +172,22 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("quiz") {
-                        ComingSoonScreen(title = "QUIZ")
+                    composable(
+                        "quiz/{siswaId}"
+                    ) { backStackEntry ->
+
+                        val siswaId =
+                            backStackEntry.arguments
+                                ?.getString("siswaId")
+                                ?.toLongOrNull() ?: 0L
+
+                        QuizScreen(
+                            navController = navController,
+                            siswaId = siswaId,
+                            bpm = bpmQuiz,
+                            spo2 = spo2Quiz,
+                            kondisi = kondisiQuiz
+                        )
                     }
 
                     composable("riwayat") {
