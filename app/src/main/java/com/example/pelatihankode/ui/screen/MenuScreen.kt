@@ -89,7 +89,7 @@ fun MenuScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(140.dp),
+            columns = GridCells.Fixed(2),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
@@ -97,18 +97,29 @@ fun MenuScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             items(menuItems) { (title, route) ->
+
                 MenuCard(
                     text = title,
                     onClick = {
-                        if (route == "quiz") {
 
-                            showMonitoringDialog = true
+                        when(route) {
 
-                        } else {
+                            "quiz" -> {
+                                showMonitoringDialog = true
+                            }
 
-                            navController.navigate(route)
+                            "riwayat" -> {
+                                navController.navigate(
+                                    "riwayat/${siswa?.id}"
+                                )
+                            }
+
+                            else -> {
+                                navController.navigate(route)
+                            }
                         }
                     },
+
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)

@@ -38,6 +38,7 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.media.MediaPlayer
 
 
 @Composable
@@ -48,8 +49,21 @@ fun QuizScreen(
     spo2: Int?,
     kondisi: String?
 ){
-
     val context = LocalContext.current
+    fun playSound(soundRes: Int) {
+
+        MediaPlayer.create(
+            context,
+            soundRes
+        ).apply {
+
+            setOnCompletionListener {
+                release()
+            }
+
+            start()
+        }
+    }
     val riwayatDao = remember {
         AppDatabase
             .getDatabase(context)
@@ -74,7 +88,9 @@ fun QuizScreen(
     var jumlahSalah by remember {
         mutableStateOf(0)
     }
-    val skor = jumlahBenar * 10
+    var skorFinal by remember { mutableStateOf(0) }
+    var benarFinal by remember { mutableStateOf(0) }
+    var salahFinal by remember { mutableStateOf(0) }
     val tanggalSekarang = SimpleDateFormat(
         "dd-MM-yyyy HH:mm",
         Locale.getDefault()
@@ -169,6 +185,7 @@ fun QuizScreen(
         ) {
 
             Column(
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(32.dp),
@@ -180,6 +197,25 @@ fun QuizScreen(
                     text = soal?.morse ?: "...",
                     fontSize = 48.sp
                 )
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
+                Button(
+                    onClick = {
+
+                        soal?.let {
+
+                            playSound(
+                                it.soundRes
+                            )
+                        }
+                    }
+                ) {
+
+                    Text("🔊 Putar Morse")
+                }
             }
         }
 
@@ -244,19 +280,15 @@ fun QuizScreen(
         Button(
             enabled = selectedAnswer != null,
             onClick = {
-                selectedAnswer?.let { jawaban ->
-
-                    if (jawaban.huruf == soal?.huruf) {
-
-                        jumlahBenar++
-
-                    } else {
-
-                        jumlahSalah++
-                    }
-                }
+                val jawabanBenar =
+                    selectedAnswer?.huruf == soal?.huruf
 
                 if (nomorSoal < 10) {
+                    if (jawabanBenar) {
+                        jumlahBenar++
+                    } else {
+                        jumlahSalah++
+                    }
 
                     generateQuestion(semuaMorse)
 
@@ -265,19 +297,19 @@ fun QuizScreen(
                     nomorSoal++
                 }else {
 
-                    val benarFinal =
-                        if (selectedAnswer?.huruf == soal?.huruf)
+                    benarFinal =
+                        if (jawabanBenar)
                             jumlahBenar + 1
                         else
                             jumlahBenar
 
-                    val salahFinal =
-                        if (selectedAnswer?.huruf != soal?.huruf)
+                    salahFinal =
+                        if (!jawabanBenar)
                             jumlahSalah + 1
                         else
                             jumlahSalah
 
-                    val skorFinal = benarFinal * 10
+                    skorFinal = benarFinal * 10
 
                     val riwayat = RiwayatEntity(
 
@@ -301,6 +333,10 @@ fun QuizScreen(
                     riwayatDao.insertRiwayat(
                         riwayat
                     )
+                    android.util.Log.d(
+                        "RIWAYAT_TEST",
+                        "INSERT BERHASIL: $riwayat"
+                    )
 
                     showResultDialog = true
                 }
@@ -321,11 +357,11 @@ fun QuizScreen(
 
             ResultDialog(
 
-                skor = skor,
+                skor = skorFinal,
 
-                jumlahBenar = jumlahBenar,
+                jumlahBenar = benarFinal,
 
-                jumlahSalah = jumlahSalah,
+                jumlahSalah = salahFinal,
 
                 onDismiss = {
 

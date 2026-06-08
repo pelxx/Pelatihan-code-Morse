@@ -4,6 +4,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun ResultDialog(
@@ -15,7 +16,13 @@ fun ResultDialog(
 
     AlertDialog(
 
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+
+        },
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false
+        ),
 
         title = {
             Text("HASIL QUIZ")

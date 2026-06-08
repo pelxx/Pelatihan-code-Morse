@@ -17,8 +17,8 @@ import com.example.pelatihankode.data.local.AppDatabase
 import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.data.local.toHurufMorse
 import com.example.pelatihankode.data.local.toMorseEntity
+import com.example.pelatihankode.ui.screen.AboutScreen
 import com.example.pelatihankode.ui.screen.BelajarScreen
-import com.example.pelatihankode.ui.screen.ComingSoonScreen
 import com.example.pelatihankode.ui.screen.MenuScreen
 import com.example.pelatihankode.ui.screen.DetailHurufScreen
 import com.example.pelatihankode.ui.screen.QuizScreen
@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
         val database = AppDatabase.getDatabase(this)
         val morseDao = database.morseDao()
         val siswaDao = database.siswaDao()
-        val riwayatDao = database.riwayatDao()
 
 
         setContent {
@@ -190,12 +189,27 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable("riwayat") {
-                        RiwayatScreen()
+                    composable(
+                        "riwayat/{siswaId}"
+                    ) { backStackEntry ->
+
+                        val siswaId =
+                            backStackEntry.arguments
+                                ?.getString("siswaId")
+                                ?.toLongOrNull() ?: 0L
+
+                        val selectedSiswa =
+                            siswaItems.find {
+                                it.id == siswaId
+                            }
+                        RiwayatScreen(
+                            siswaId = siswaId,
+                            siswa = selectedSiswa
+                        )
                     }
 
                     composable("about") {
-                        ComingSoonScreen(title = "ABOUT")
+                        AboutScreen()
                     }
 
                     composable("detail/{huruf}") { backStackEntry ->

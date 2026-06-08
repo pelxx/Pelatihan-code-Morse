@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -33,6 +31,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
@@ -252,8 +251,13 @@ fun SiswaScreen(
         AlertDialog(
 
             onDismissRequest = {
-                siswaHapus = null
+                // jangan tutup dialog
             },
+
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            ),
 
             title = {
                 Text("Hapus Siswa")
@@ -262,7 +266,7 @@ fun SiswaScreen(
             text = {
 
                 Text(
-                    "Apakah Anda yakin ingin menghapus siswa ${siswa.nama}'?"
+                    "Apakah Anda yakin ingin menghapus siswa ${siswa.nama}?"
                 )
             },
 
@@ -275,11 +279,13 @@ fun SiswaScreen(
                         onDeleteSiswa(
                             siswa.id
                         )
+
                         Toast.makeText(
                             context,
                             "Siswa dihapus",
                             Toast.LENGTH_SHORT
                         ).show()
+
                         siswaHapus = null
                     }
 

@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 fun MonitoringDialog(
@@ -37,7 +38,11 @@ fun MonitoringDialog(
 
     AlertDialog(
 
-        onDismissRequest = onDismiss,
+        onDismissRequest = {},
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false
+        ),
 
         title = {
             Text("Monitoring Sebelum Quiz")

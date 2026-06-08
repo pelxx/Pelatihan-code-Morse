@@ -30,6 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
@@ -132,7 +133,13 @@ fun SiswaDialog(
         }
     AlertDialog(
 
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+
+        },
+        properties = DialogProperties(
+            dismissOnBackPress = false,
+            dismissOnClickOutside = false
+        ),
 
         title = {
 
