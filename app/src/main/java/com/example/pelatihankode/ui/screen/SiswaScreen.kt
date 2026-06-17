@@ -40,7 +40,10 @@ import com.example.pelatihankode.ui.components.SiswaDialog
 
 
 val Dynapuf = FontFamily(
-    Font(R.font.dynapuf)
+    Font(R.font.dynapufprimary)
+)
+val DynapufSec = FontFamily(
+    Font(R.font.dynapufsecondary)
 )
 
 @Composable
@@ -138,7 +141,7 @@ fun SiswaScreen(
 
                     Text(
                         text = "Belum ada siswa",
-
+                        fontFamily = DynapufSec,
                         fontSize = 18.sp,
 
                         color = Color.Black
@@ -172,7 +175,7 @@ fun SiswaScreen(
 
                     onDelete = {
 
-                            siswaHapus=siswa
+                        siswaHapus=siswa
                     }
                 )
             }

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.pelatihankode.R
 
 val DynapufMenu = FontFamily(
-    Font(R.font.dynapuf)
+    Font(R.font.dynapufprimary)
 )
 
 @Composable

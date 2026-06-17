@@ -27,7 +27,7 @@ import androidx.compose.runtime.setValue
 
 
 val DynapufMenu = FontFamily(
-    Font(R.font.dynapuf)
+    Font(R.font.dynapufprimary)
 )
 
 @Composable
@@ -82,6 +82,7 @@ fun MenuScreen(
             Text(
                 text = it.nama,
                 fontSize = 20.sp,
+                fontFamily = DynapufSec,
                 color = Color.Black
             )
         }

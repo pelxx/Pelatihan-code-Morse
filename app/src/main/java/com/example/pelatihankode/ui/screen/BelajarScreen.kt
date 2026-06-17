@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.pelatihankode.data.HurufMorse
+import com.example.pelatihankode.data.local.HurufMorse
 import com.example.pelatihankode.data.defaultHurufList
 import com.example.pelatihankode.ui.components.HurufCard
 

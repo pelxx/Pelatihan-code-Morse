@@ -1,6 +1,7 @@
 package com.example.pelatihankode.data
 
 import com.example.pelatihankode.R
+import com.example.pelatihankode.data.local.HurufMorse
 
 val defaultHurufList = listOf(
     HurufMorse("A", ".-", R.drawable.huruf_a, R.raw.morse_a),

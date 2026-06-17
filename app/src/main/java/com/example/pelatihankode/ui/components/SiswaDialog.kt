@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -28,15 +30,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
+import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.utils.createStudentPhotoUri
 
+val Dynapuf = FontFamily(
+    Font(R.font.dynapufprimary)
+)
+val DynapufSec = FontFamily(
+    Font(R.font.dynapufsecondary)
+)
 @Composable
 fun SiswaDialog(
     title: String,
@@ -144,7 +155,8 @@ fun SiswaDialog(
         title = {
 
             Text(
-                text = title
+                text = title,
+                fontFamily = Dynapuf
             )
         },
 
@@ -167,7 +179,10 @@ fun SiswaDialog(
                     },
 
                     label = {
-                        Text("Nama")
+                        Text(
+                            text = "Nama",
+                            fontFamily = DynapufSec
+                        )
                     },
 
                     singleLine = true,
@@ -188,7 +203,10 @@ fun SiswaDialog(
                     },
 
                     label = {
-                        Text("Umur")
+                        Text(
+                            text = "Umur",
+                            fontFamily = DynapufSec
+                            )
                     },
 
                     singleLine = true,
@@ -204,83 +222,89 @@ fun SiswaDialog(
                     },
 
                     label = {
-                        Text("Kelas")
+                        Text(
+                            text = "Kelas",
+                            fontFamily = DynapufSec
+                            )
                     },
 
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
+                Row {
+                    Button(
 
-                Button(
+                        onClick = {
 
-                    onClick = {
+                            if (
 
-                        if (
+                                ContextCompat.checkSelfPermission(
 
-                            ContextCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.CAMERA
 
-                                context,
-                                Manifest.permission.CAMERA
+                                ) == PackageManager.PERMISSION_GRANTED
 
-                            ) == PackageManager.PERMISSION_GRANTED
+                            ) {
 
-                        ) {
+                                cameraLauncher.launch(
+                                    cameraUri
+                                )
 
-                            cameraLauncher.launch(
-                                cameraUri
-                            )
+                            } else {
 
-                        } else {
+                                permissionLauncher.launch(
+                                    Manifest.permission.CAMERA
+                                )
+                            }
+                        }
 
-                            permissionLauncher.launch(
-                                Manifest.permission.CAMERA
+                    ) {
+
+                        Text(
+                            text = "BUKA CAMERA",
+                            fontFamily = DynapufSec
+                        )
+                    }
+                    Spacer(modifier = Modifier.size(10.dp))
+
+                    Button(
+
+                        onClick = {
+
+                            galleryLauncher.launch(
+                                "image/*"
                             )
                         }
-                    }
 
-                ) {
+                    ) {
 
-                    Text(
-                        text = "BUKA CAMERA"
-                    )
-                }
-
-
-                Button(
-
-                    onClick = {
-
-                        galleryLauncher.launch(
-                            "image/*"
+                        Text(
+                            text = "BUKA GALERI",
+                            fontFamily = DynapufSec
                         )
                     }
 
-                ) {
+                    fotoUri?.let {
 
-                    Text(
-                        text = "BUKA GALERI"
-                    )
-                }
+                        AsyncImage(
 
-                fotoUri?.let {
+                            model = it,
 
-                    AsyncImage(
+                            contentDescription = null,
 
-                        model = it,
+                            modifier = Modifier
+                                .size(120.dp)
+                                .clip(
+                                    RoundedCornerShape(16.dp)
+                                ),
 
-                        contentDescription = null,
-
-                        modifier = Modifier
-                            .size(120.dp)
-                            .clip(
-                                RoundedCornerShape(16.dp)
-                            ),
-
-                        contentScale = ContentScale.Crop
-                    )
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
             }
-        },
+                },
 
         confirmButton = {
 
@@ -300,7 +324,8 @@ fun SiswaDialog(
             ) {
 
                 Text(
-                    text = "SIMPAN"
+                    text = "SIMPAN",
+                    fontFamily = DynapufSec
                 )
             }
         },
@@ -312,7 +337,8 @@ fun SiswaDialog(
             ) {
 
                 Text(
-                    text = "BATAL"
+                    text = "BATAL",
+                    fontFamily = DynapufSec
                 )
             }
         }

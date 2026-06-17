@@ -1,4 +1,4 @@
-package com.example.pelatihankode.data
+package com.example.pelatihankode.data.local
 
 data class HurufMorse(
 

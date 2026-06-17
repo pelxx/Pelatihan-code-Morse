@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.*
 import com.example.pelatihankode.data.defaultHurufList
@@ -44,15 +45,15 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             PelatihanKODETheme {
-                var bpmQuiz by remember {
+                var bpmQuiz by rememberSaveable {
                     mutableStateOf<Int?>(null)
                 }
 
-                var spo2Quiz by remember {
+                var spo2Quiz by rememberSaveable {
                     mutableStateOf<Int?>(null)
                 }
 
-                var kondisiQuiz by remember {
+                var kondisiQuiz by rememberSaveable {
                     mutableStateOf<String?>(null)
                 }
                 val navController = rememberNavController()

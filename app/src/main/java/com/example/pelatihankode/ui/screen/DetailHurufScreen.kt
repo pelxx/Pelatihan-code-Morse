@@ -1,6 +1,5 @@
 package com.example.pelatihankode.ui.screen
 
-import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,6 +8,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -21,10 +21,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pelatihankode.R
-import com.example.pelatihankode.data.HurufMorse
+import com.example.pelatihankode.data.local.HurufMorse
+import com.example.pelatihankode.utils.MorsePlayer
+import com.example.pelatihankode.utils.MorseVibrator
 
 val DynapufDetail = FontFamily(
-    Font(R.font.dynapuf)
+    Font(R.font.dynapufprimary)
 )
 
 @Composable
@@ -99,28 +101,31 @@ fun DetailHurufScreen(
         Spacer(modifier = Modifier.height(40.dp))
 
         Button(
-
             onClick = {
 
-                val mediaPlayer = MediaPlayer.create(
+                MorsePlayer.play(
                     context,
                     item.soundRes
                 )
 
-                mediaPlayer.setOnCompletionListener {
-                    it.release()
-                }
-
-                mediaPlayer.start()
-
+                MorseVibrator.vibrateMorse(
+                    context,
+                    item.morse
+                )
             }
-
         ) {
 
             Text(
                 text = "PLAY SOUND",
                 fontSize = 20.sp
             )
+        }
+        DisposableEffect(Unit) {
+
+            onDispose {
+
+                MorsePlayer.release()
+            }
         }
     }
 }

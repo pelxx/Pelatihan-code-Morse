@@ -116,6 +116,7 @@ fun SiswaCard(
 
                     Text(
                         text = siswa.kelas,
+                        fontFamily = DynapufSec,
                         fontSize = 16.sp,
                         color = Color.DarkGray
                     )

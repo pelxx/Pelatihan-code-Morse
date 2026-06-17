@@ -20,10 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.content.res.Configuration
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -38,7 +40,8 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import android.media.MediaPlayer
+import com.example.pelatihankode.utils.MorsePlayer
+import com.example.pelatihankode.utils.MorseVibrator
 
 
 @Composable
@@ -50,65 +53,61 @@ fun QuizScreen(
     kondisi: String?
 ){
     val context = LocalContext.current
-    fun playSound(soundRes: Int) {
-
-        MediaPlayer.create(
-            context,
-            soundRes
-        ).apply {
-
-            setOnCompletionListener {
-                release()
-            }
-
-            start()
-        }
-    }
     val riwayatDao = remember {
         AppDatabase
             .getDatabase(context)
             .riwayatDao()
     }
 
-    var soal by remember {
-        mutableStateOf<MorseEntity?>(null)
+    var currentSoalHuruf by rememberSaveable {
+        mutableStateOf<String?>(null)
     }
-    var pilihan by remember {
-        mutableStateOf<List<MorseEntity>>(emptyList())
+    var pilihanHuruf by rememberSaveable {
+        mutableStateOf<List<String>>(emptyList())
     }
-    var selectedAnswer by remember {
-        mutableStateOf<MorseEntity?>(null)
+    var selectedAnswerHuruf by rememberSaveable {
+        mutableStateOf<String?>(null)
     }
-    var nomorSoal by remember {
+    var nomorSoal by rememberSaveable {
         mutableStateOf(1)
     }
-    var jumlahBenar by remember {
+    var jumlahBenar by rememberSaveable {
         mutableStateOf(0)
     }
-    var jumlahSalah by remember {
+    var jumlahSalah by rememberSaveable {
         mutableStateOf(0)
     }
-    var skorFinal by remember { mutableStateOf(0) }
-    var benarFinal by remember { mutableStateOf(0) }
-    var salahFinal by remember { mutableStateOf(0) }
+    var skorFinal by rememberSaveable { mutableStateOf(0) }
+    var benarFinal by rememberSaveable { mutableStateOf(0) }
+    var salahFinal by rememberSaveable { mutableStateOf(0) }
     val tanggalSekarang = SimpleDateFormat(
         "dd-MM-yyyy HH:mm",
         Locale.getDefault()
     ).format(Date())
-    var showResultDialog by remember {
+    var showResultDialog by rememberSaveable {
         mutableStateOf(false)
     }
     var semuaMorse by remember {
         mutableStateOf<List<MorseEntity>>(emptyList())
     }
     val configuration = LocalConfiguration.current
+    val soal = semuaMorse.firstOrNull {
+        it.huruf == currentSoalHuruf
+    }
+    val pilihan = pilihanHuruf.mapNotNull { huruf ->
+        semuaMorse.firstOrNull {
+            it.huruf == huruf
+        }
+    }
+
     fun generateQuestion(
         data: List<MorseEntity>
     ) {
+        if (data.isEmpty()) return
 
         val soalTerpilih = data.random()
 
-        soal = soalTerpilih
+        currentSoalHuruf = soalTerpilih.huruf
 
         val jawabanSalah = data
             .filter {
@@ -117,11 +116,14 @@ fun QuizScreen(
             .shuffled()
             .take(2)
 
-        pilihan = (
+        pilihanHuruf = (
                 jawabanSalah +
                         soalTerpilih
                 )
             .shuffled()
+            .map {
+                it.huruf
+            }
     }
     LaunchedEffect(Unit) {
         android.util.Log.d(
@@ -130,18 +132,45 @@ fun QuizScreen(
         )
 
         semuaMorse = withContext(Dispatchers.IO) {
-
+            android.util.Log.d(
+                "QUIZ_ROTATE",
+                "LOAD SELESAI size=${semuaMorse.size}"
+            )
             AppDatabase
                 .getDatabase(context)
                 .morseDao()
                 .getAllMorse()
         }
 
-        generateQuestion(semuaMorse)
+        if (
+            currentSoalHuruf == null ||
+            pilihanHuruf.isEmpty()
+        ) {
+            generateQuestion(semuaMorse)
+        }
     }
     val isLandscape =
         configuration.orientation ==
                 Configuration.ORIENTATION_LANDSCAPE
+    if (
+        semuaMorse.isEmpty()
+    ) {
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Text("Loading...")
+        }
+
+        return
+    }
+    android.util.Log.d(
+        "QUIZ_ROTATE",
+        "soal=$currentSoalHuruf pilihan=${pilihanHuruf.size}"
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -207,8 +236,13 @@ fun QuizScreen(
 
                         soal?.let {
 
-                            playSound(
+                            MorsePlayer.play(
+                                context,
                                 it.soundRes
+                            )
+                            MorseVibrator.vibrateMorse(
+                                context,
+                                it.morse
                             )
                         }
                     }
@@ -255,12 +289,12 @@ fun QuizScreen(
                     imageRes = it.imageRes,
 
                     selected =
-                        selectedAnswer?.huruf ==
+                        selectedAnswerHuruf ==
                                 it.huruf,
 
                     onClick = {
 
-                        selectedAnswer = it
+                        selectedAnswerHuruf = it.huruf
                     },
 
                     modifier = Modifier
@@ -278,10 +312,10 @@ fun QuizScreen(
         )
 
         Button(
-            enabled = selectedAnswer != null,
+            enabled = selectedAnswerHuruf != null,
             onClick = {
                 val jawabanBenar =
-                    selectedAnswer?.huruf == soal?.huruf
+                    selectedAnswerHuruf == soal?.huruf
 
                 if (nomorSoal < 10) {
                     if (jawabanBenar) {
@@ -292,7 +326,7 @@ fun QuizScreen(
 
                     generateQuestion(semuaMorse)
 
-                    selectedAnswer = null
+                    selectedAnswerHuruf = null
 
                     nomorSoal++
                 }else {
@@ -370,6 +404,13 @@ fun QuizScreen(
                     navController.popBackStack()
                 }
             )
+        }
+        DisposableEffect(Unit) {
+
+            onDispose {
+
+                MorsePlayer.release()
+            }
         }
     }
 }
