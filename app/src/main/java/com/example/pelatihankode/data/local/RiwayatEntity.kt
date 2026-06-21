@@ -8,12 +8,6 @@ data class RiwayatEntity(
 
     val tanggal: String,
 
-    val skor: Int,
-
-    val benar: Int,
-
-    val salah: Int,
-
     val bpm: Int?,
 
     val spo2: Int?,

@@ -17,7 +17,7 @@ fun MonitoringDialog(
 
     onDismiss: () -> Unit,
 
-    onMulaiQuiz: (
+    onMonitoringSelesai: (
         Int?,
         Int?,
         String
@@ -36,6 +36,9 @@ fun MonitoringDialog(
         mutableStateOf("")
     }
 
+    val isValid =
+        bpm.isNotBlank() && spo2.isNotBlank() && kondisi.isNotBlank()
+
     AlertDialog(
 
         onDismissRequest = {},
@@ -45,7 +48,7 @@ fun MonitoringDialog(
         ),
 
         title = {
-            Text("Monitoring Sebelum Quiz")
+            Text("Smart Check (Student Monitoring and Readiness Tracking)")
         },
 
         text = {
@@ -114,10 +117,10 @@ fun MonitoringDialog(
         confirmButton = {
 
             TextButton(
-
+            enabled = isValid,
                 onClick = {
 
-                    onMulaiQuiz(
+                    onMonitoringSelesai(
 
                         bpm.toIntOrNull(),
 
@@ -128,7 +131,7 @@ fun MonitoringDialog(
                 }
             ) {
 
-                Text("MULAI QUIZ")
+                Text("LANJUT")
             }
         },
 

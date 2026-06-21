@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -19,10 +20,11 @@ import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.data.local.toHurufMorse
 import com.example.pelatihankode.data.local.toMorseEntity
 import com.example.pelatihankode.ui.screen.AboutScreen
+import com.example.pelatihankode.ui.screen.AlfabetScreen
 import com.example.pelatihankode.ui.screen.BelajarScreen
+import com.example.pelatihankode.ui.screen.DetailAlfabetScreen
 import com.example.pelatihankode.ui.screen.MenuScreen
 import com.example.pelatihankode.ui.screen.DetailHurufScreen
-import com.example.pelatihankode.ui.screen.QuizScreen
 import com.example.pelatihankode.ui.screen.RiwayatScreen
 import com.example.pelatihankode.ui.screen.SiswaScreen
 import com.example.pelatihankode.ui.theme.PelatihanKODETheme
@@ -139,7 +141,28 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+                    composable("alfabet") {
 
+                        AlfabetScreen(navController)
+
+                    }
+
+                    composable(
+
+                        route = "detailAlfabet/{huruf}"
+
+                    ) { backStackEntry ->
+
+                        val huruf = backStackEntry.arguments?.getString("huruf")
+
+                        val item = defaultHurufList.first {
+
+                            it.huruf == huruf
+
+                        }
+
+                        DetailAlfabetScreen(item)
+                    }
                     composable("menu/{siswaId}") { backStackEntry ->
                         val siswaId = backStackEntry.arguments
                             ?.getString("siswaId")
@@ -152,16 +175,6 @@ class MainActivity : ComponentActivity() {
 
                             siswa = selectedSiswa,
 
-                            onMulaiQuiz = { bpm, spo2, kondisi ->
-
-                                bpmQuiz = bpm
-                                spo2Quiz = spo2
-                                kondisiQuiz = kondisi
-
-                                navController.navigate(
-                                    "quiz/${selectedSiswa?.id}"
-                                )
-                            }
                         )
                     }
 
@@ -180,14 +193,6 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments
                                 ?.getString("siswaId")
                                 ?.toLongOrNull() ?: 0L
-
-                        QuizScreen(
-                            navController = navController,
-                            siswaId = siswaId,
-                            bpm = bpmQuiz,
-                            spo2 = spo2Quiz,
-                            kondisi = kondisiQuiz
-                        )
                     }
 
                     composable(

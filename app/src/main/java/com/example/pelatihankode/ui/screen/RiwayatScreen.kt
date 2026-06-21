@@ -164,19 +164,6 @@ fun RiwayatScreen(
                             Spacer(
                                 modifier = Modifier.height(8.dp)
                             )
-
-                            Text(
-                                text = "Skor : ${item.skor}"
-                            )
-
-                            Text(
-                                text = "Benar : ${item.benar}"
-                            )
-
-                            Text(
-                                text = "Salah : ${item.salah}"
-                            )
-
                             Text(
                                 text = "BPM : ${item.bpm ?: "-"}"
                             )

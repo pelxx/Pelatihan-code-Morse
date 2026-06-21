@@ -60,9 +60,6 @@ class AppDatabase private constructor(
                  $COLUMN_RIWAYAT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                  $COLUMN_RIWAYAT_SISWA_ID INTEGER NOT NULL,
                  $COLUMN_TANGGAL TEXT NOT NULL,
-                 $COLUMN_SKOR INTEGER NOT NULL,
-                 $COLUMN_BENAR INTEGER NOT NULL,
-                 $COLUMN_SALAH INTEGER NOT NULL,
                  $COLUMN_BPM INTEGER,
                  $COLUMN_SPO2 INTEGER,
                  $COLUMN_KONDISI TEXT

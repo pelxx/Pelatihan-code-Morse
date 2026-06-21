@@ -33,20 +33,12 @@ val DynapufMenu = FontFamily(
 @Composable
 fun MenuScreen(
     navController: NavController,
-    siswa: SiswaEntity?,
-    onMulaiQuiz: (
-        Int?,
-        Int?,
-        String?
-    ) -> Unit
+    siswa: SiswaEntity?
 ) {
-    var showMonitoringDialog by remember {
-        mutableStateOf(false)
-    }
 
     val menuItems = listOf(
-        "BELAJAR" to "belajar",
-        "QUIZ" to "quiz",
+        "BELAJAR MORSE" to "belajar",
+        "BELAJAR ALFABET" to "alfabet",
         "RIWAYAT" to "riwayat",
         "ABOUT" to "about"
     )
@@ -104,11 +96,6 @@ fun MenuScreen(
                     onClick = {
 
                         when(route) {
-
-                            "quiz" -> {
-                                showMonitoringDialog = true
-                            }
-
                             "riwayat" -> {
                                 navController.navigate(
                                     "riwayat/${siswa?.id}"
@@ -127,27 +114,5 @@ fun MenuScreen(
                 )
             }
         }
-    }
-    if (showMonitoringDialog) {
-
-        MonitoringDialog(
-
-            onDismiss = {
-
-                showMonitoringDialog = false
-            },
-
-            onMulaiQuiz = { bpm, spo2, kondisi ->
-                onMulaiQuiz(
-                    bpm,
-                    spo2,
-                    kondisi
-                )
-
-                showMonitoringDialog = false
-
-
-            }
-        )
     }
 }

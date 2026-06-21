@@ -94,24 +94,6 @@ class RiwayatDao(
                 )
             ),
 
-            skor = getInt(
-                getColumnIndexOrThrow(
-                    AppDatabase.COLUMN_SKOR
-                )
-            ),
-
-            benar = getInt(
-                getColumnIndexOrThrow(
-                    AppDatabase.COLUMN_BENAR
-                )
-            ),
-
-            salah = getInt(
-                getColumnIndexOrThrow(
-                    AppDatabase.COLUMN_SALAH
-                )
-            ),
-
             bpm = if (
                 isNull(
                     getColumnIndexOrThrow(
@@ -160,21 +142,6 @@ class RiwayatDao(
             put(
                 AppDatabase.COLUMN_TANGGAL,
                 riwayat.tanggal
-            )
-
-            put(
-                AppDatabase.COLUMN_SKOR,
-                riwayat.skor
-            )
-
-            put(
-                AppDatabase.COLUMN_BENAR,
-                riwayat.benar
-            )
-
-            put(
-                AppDatabase.COLUMN_SALAH,
-                riwayat.salah
             )
 
             put(

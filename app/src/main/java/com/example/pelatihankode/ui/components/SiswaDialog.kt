@@ -266,7 +266,7 @@ fun SiswaDialog(
                             fontFamily = DynapufSec
                         )
                     }
-                    Spacer(modifier = Modifier.size(10.dp))
+                    Spacer(modifier = Modifier.size(9.dp))
 
                     Button(
 

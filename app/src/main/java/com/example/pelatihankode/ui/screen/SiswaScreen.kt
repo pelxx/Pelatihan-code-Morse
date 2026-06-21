@@ -35,6 +35,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
+import com.example.pelatihankode.ui.components.BpmWarningDialog
+import com.example.pelatihankode.ui.components.MonitoringDialog
 import com.example.pelatihankode.ui.components.SiswaCard
 import com.example.pelatihankode.ui.components.SiswaDialog
 
@@ -64,6 +66,17 @@ fun SiswaScreen(
         mutableStateOf<SiswaEntity?>(null)
     }
     var showTambahDialog by remember {
+        mutableStateOf(false)
+    }
+    var selectedSiswa by remember {
+        mutableStateOf<SiswaEntity?>(null)
+    }
+
+    var showMonitoringDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var showBpmWarning by remember {
         mutableStateOf(false)
     }
 
@@ -163,9 +176,9 @@ fun SiswaScreen(
 
                     onPilih = {
 
-                        navController.navigate(
-                            "menu/${siswa.id}"
-                        )
+                        selectedSiswa = siswa
+
+                        showMonitoringDialog = true
                     },
 
                     onEdit = {
@@ -180,6 +193,18 @@ fun SiswaScreen(
                 )
             }
         }
+    }
+    if (showBpmWarning) {
+
+        BpmWarningDialog(
+
+            onDismiss = {
+
+                showBpmWarning = false
+
+                selectedSiswa = null
+            }
+        )
     }
 
     if (showTambahDialog) {
@@ -309,6 +334,41 @@ fun SiswaScreen(
                 ) {
 
                     Text("BATAL")
+                }
+            }
+        )
+    }
+    if (
+
+        showMonitoringDialog &&
+        selectedSiswa != null
+
+    ) {
+
+        MonitoringDialog(
+
+            onDismiss = {
+
+                showMonitoringDialog = false
+
+                selectedSiswa = null
+            },
+
+            onMonitoringSelesai = { bpm, spo2, kondisi ->
+
+                showMonitoringDialog = false
+
+                if ((bpm ?: 0) > 100) {
+
+                    showBpmWarning = true
+
+                } else {
+
+                    navController.navigate(
+                        "menu/${selectedSiswa!!.id}"
+                    )
+
+                    selectedSiswa = null
                 }
             }
         )
