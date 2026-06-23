@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +29,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 
 @Composable
@@ -52,7 +52,7 @@ fun SiswaCard(
             defaultElevation = 6.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
 
@@ -87,7 +87,10 @@ fun SiswaCard(
 
                     Card(
                         modifier = Modifier.size(100.dp),
-                        shape = CircleShape
+                        shape = CircleShape,
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        )
                     ) {
 
                         Box(
@@ -98,7 +101,7 @@ fun SiswaCard(
                             Text(
                                 text = siswa.nama.firstOrNull()?.toString() ?: "?",
                                 fontSize = 28.sp,
-                                color = Color.Black
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                     }
@@ -111,14 +114,14 @@ fun SiswaCard(
                         text = siswa.nama,
                         fontFamily = Dynapuf,
                         fontSize = 22.sp,
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     Text(
                         text = siswa.kelas,
                         fontFamily = DynapufSec,
                         fontSize = 16.sp,
-                        color = Color.DarkGray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -153,5 +156,3 @@ fun SiswaCard(
         }
     }
 }
-
-

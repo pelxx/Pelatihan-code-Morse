@@ -19,8 +19,7 @@ fun MonitoringDialog(
 
     onMonitoringSelesai: (
         Int?,
-        Int?,
-        String
+        Int?
     ) -> Unit
 ) {
 
@@ -31,13 +30,8 @@ fun MonitoringDialog(
     var spo2 by remember {
         mutableStateOf("")
     }
-
-    var kondisi by remember {
-        mutableStateOf("")
-    }
-
     val isValid =
-        bpm.isNotBlank() && spo2.isNotBlank() && kondisi.isNotBlank()
+        bpm.isNotBlank() && spo2.isNotBlank()
 
     AlertDialog(
 
@@ -96,21 +90,6 @@ fun MonitoringDialog(
 
                     modifier = Modifier.fillMaxWidth()
                 )
-
-                OutlinedTextField(
-
-                    value = kondisi,
-
-                    onValueChange = {
-                        kondisi = it
-                    },
-
-                    label = {
-                        Text("Kondisi")
-                    },
-
-                    modifier = Modifier.fillMaxWidth()
-                )
             }
         },
 
@@ -126,7 +105,6 @@ fun MonitoringDialog(
 
                         spo2.toIntOrNull(),
 
-                        kondisi
                     )
                 }
             ) {

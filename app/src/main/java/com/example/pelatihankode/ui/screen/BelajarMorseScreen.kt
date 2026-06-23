@@ -1,5 +1,6 @@
 package com.example.pelatihankode.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,16 +11,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pelatihankode.data.local.HurufMorse
 import com.example.pelatihankode.data.defaultHurufList
 import com.example.pelatihankode.ui.components.HurufCard
+import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 
 @Composable
 fun BelajarScreen(
@@ -30,8 +34,14 @@ fun BelajarScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = AppBackgroundGradient
+                )
+            )
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
 
     ) {
 
@@ -39,6 +49,7 @@ fun BelajarScreen(
             text = "BELAJAR MORSE",
             fontSize = 32.sp,
             fontFamily = Dynapuf,
+            color = MaterialTheme.colorScheme.onBackground
 
         )
 
@@ -46,7 +57,7 @@ fun BelajarScreen(
 
         LazyVerticalGrid(
 
-            columns = GridCells.Fixed(5),
+            columns = GridCells.Fixed(2),
 
             modifier = Modifier
                 .fillMaxWidth()

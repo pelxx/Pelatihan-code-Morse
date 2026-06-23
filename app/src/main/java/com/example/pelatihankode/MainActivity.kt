@@ -47,17 +47,6 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             PelatihanKODETheme {
-                var bpmQuiz by rememberSaveable {
-                    mutableStateOf<Int?>(null)
-                }
-
-                var spo2Quiz by rememberSaveable {
-                    mutableStateOf<Int?>(null)
-                }
-
-                var kondisiQuiz by rememberSaveable {
-                    mutableStateOf<String?>(null)
-                }
                 val navController = rememberNavController()
                 val coroutineScope = rememberCoroutineScope()
                 var hurufItems by remember { mutableStateOf(defaultHurufList) }
@@ -75,9 +64,7 @@ class MainActivity : ComponentActivity() {
 
                 LaunchedEffect(Unit) {
                     hurufItems = withContext(Dispatchers.IO) {
-                        if (morseDao.countMorse() == 0) {
-                            morseDao.insertAll(defaultHurufList.map { it.toMorseEntity() })
-                        }
+                        morseDao.insertAll(defaultHurufList.map { it.toMorseEntity() })
 
                         morseDao.getAllMorse()
                             .map { it.toHurufMorse() }

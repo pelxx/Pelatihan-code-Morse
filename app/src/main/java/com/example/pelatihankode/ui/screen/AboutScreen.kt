@@ -1,5 +1,6 @@
 package com.example.pelatihankode.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,15 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pelatihankode.R
+import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 
 @Composable
 fun AboutScreen() {
@@ -24,6 +28,11 @@ fun AboutScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = AppBackgroundGradient
+                )
+            )
             .padding(24.dp),
 
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,7 +53,8 @@ fun AboutScreen() {
 
         Text(
             text = "Pelatihan KODE",
-            fontSize = 30.sp
+            fontSize = 30.sp,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(
@@ -54,7 +64,8 @@ fun AboutScreen() {
         Text(
             text =
                 "Aplikasi pembelajaran kode Morse untuk membantu anak-anak autis mengenal huruf dan bunyi kode Morse.",
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(
@@ -62,7 +73,8 @@ fun AboutScreen() {
         )
 
         Text(
-            text = "Versi 1.0"
+            text = "Versi 1.0",
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(
@@ -70,15 +82,18 @@ fun AboutScreen() {
         )
 
         Text(
-            text = "Dibuat oleh"
+            text = "Dibuat oleh",
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Text(
-            text = "Fadillah Hayatus Zilal"
+            text = "Fadillah Hayatus Zilal",
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Text(
-            text = "D3 Teknik Elektromedis"
+            text = "D3 Teknik Elektromedis",
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }

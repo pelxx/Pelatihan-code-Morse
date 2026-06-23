@@ -27,22 +27,6 @@ class MorseDao(
         return items
     }
 
-    fun getMorseByHuruf(huruf: String): MorseEntity? {
-        val cursor = database.readableDatabase.query(
-            AppDatabase.TABLE_MORSE,
-            null,
-            "${AppDatabase.COLUMN_HURUF} = ?",
-            arrayOf(huruf),
-            null,
-            null,
-            null,
-            "1"
-        )
-
-        return cursor.use {
-            if (it.moveToFirst()) it.toMorseEntity() else null
-        }
-    }
 
     fun countMorse(): Int {
         val cursor = database.readableDatabase.rawQuery(

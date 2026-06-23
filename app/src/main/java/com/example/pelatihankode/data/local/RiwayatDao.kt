@@ -118,12 +118,6 @@ class RiwayatDao(
                 getColumnIndexOrThrow(
                     AppDatabase.COLUMN_SPO2
                 )
-            ),
-
-            kondisi = getString(
-                getColumnIndexOrThrow(
-                    AppDatabase.COLUMN_KONDISI
-                )
             )
         )
     }
@@ -152,11 +146,6 @@ class RiwayatDao(
             put(
                 AppDatabase.COLUMN_SPO2,
                 riwayat.spo2
-            )
-
-            put(
-                AppDatabase.COLUMN_KONDISI,
-                riwayat.kondisi
             )
         }
     }

@@ -9,21 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.ui.components.MenuCard
-import com.example.pelatihankode.ui.components.MonitoringDialog
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 
 
 val DynapufMenu = FontFamily(
@@ -49,10 +45,7 @@ fun MenuScreen(
 
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White,
-                        Color(0xFFFF4FC3)
-                    )
+                    colors = AppBackgroundGradient
                 )
             )
 
@@ -61,12 +54,14 @@ fun MenuScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
+        Spacer(
+            modifier = Modifier.height(9.dp)
+        )
         Text(
             text = "MENU UTAMA",
             fontFamily = DynapufMenu,
             fontSize = 36.sp,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         siswa?.let {
@@ -75,7 +70,7 @@ fun MenuScreen(
                 text = it.nama,
                 fontSize = 20.sp,
                 fontFamily = DynapufSec,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 

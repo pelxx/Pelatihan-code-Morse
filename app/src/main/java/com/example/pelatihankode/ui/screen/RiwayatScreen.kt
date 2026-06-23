@@ -1,5 +1,6 @@
 package com.example.pelatihankode.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pelatihankode.data.local.AppDatabase
 import com.example.pelatihankode.data.local.RiwayatEntity
 import com.example.pelatihankode.data.local.SiswaEntity
+import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -82,7 +86,13 @@ fun RiwayatScreen(
     if (isLoading) {
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = AppBackgroundGradient
+                    )
+                ),
             contentAlignment = Alignment.Center
         ) {
 
@@ -95,12 +105,19 @@ fun RiwayatScreen(
     if (riwayatList.isEmpty()) {
 
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = AppBackgroundGradient
+                    )
+                ),
             contentAlignment = Alignment.Center
         ) {
 
             Text(
-                text = "Belum ada riwayat"
+                text = "Belum ada riwayat",
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -109,6 +126,11 @@ fun RiwayatScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = AppBackgroundGradient
+                    )
+                )
                 .padding(16.dp),
 
             verticalArrangement =
@@ -128,7 +150,10 @@ fun RiwayatScreen(
                     elevation =
                         CardDefaults.cardElevation(
                             defaultElevation = 4.dp
-                        )
+                        ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
                 ) {
 
                     Row(
@@ -170,10 +195,6 @@ fun RiwayatScreen(
 
                             Text(
                                 text = "SpO2 : ${item.spo2 ?: "-"}"
-                            )
-
-                            Text(
-                                text = "Kondisi : ${item.kondisi ?: "-"}"
                             )
                         }
                     }

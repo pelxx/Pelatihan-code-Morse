@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.HurufMorse
+import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 import com.example.pelatihankode.utils.MorsePlayer
 import com.example.pelatihankode.utils.MorseVibrator
 
@@ -45,10 +46,7 @@ fun DetailHurufScreen(
 
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White,
-                        Color(0xFFFF4FC3)
-                    )
+                    colors = AppBackgroundGradient
                 )
             )
 
@@ -86,7 +84,9 @@ fun DetailHurufScreen(
 
             fontSize = 64.sp,
 
-            fontFamily = DynapufDetail
+            fontFamily = DynapufDetail,
+
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -95,7 +95,9 @@ fun DetailHurufScreen(
 
             text = item.morse,
 
-            fontSize = 42.sp
+            fontSize = 42.sp,
+
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(40.dp))

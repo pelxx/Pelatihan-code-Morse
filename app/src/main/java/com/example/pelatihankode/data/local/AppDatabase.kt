@@ -61,8 +61,7 @@ class AppDatabase private constructor(
                  $COLUMN_RIWAYAT_SISWA_ID INTEGER NOT NULL,
                  $COLUMN_TANGGAL TEXT NOT NULL,
                  $COLUMN_BPM INTEGER,
-                 $COLUMN_SPO2 INTEGER,
-                 $COLUMN_KONDISI TEXT
+                 $COLUMN_SPO2 INTEGER
     )
     """.trimIndent()
         )
@@ -147,16 +146,10 @@ class AppDatabase private constructor(
 
         const val COLUMN_TANGGAL = "tanggal"
 
-        const val COLUMN_SKOR = "skor"
-        const val COLUMN_BENAR = "benar"
-        const val COLUMN_SALAH = "salah"
-
         const val COLUMN_BPM = "bpm"
         const val COLUMN_SPO2 = "spo2"
-        const val COLUMN_KONDISI = "kondisi"
-
         private const val DATABASE_NAME = "morse_database.db"
-        private const val DATABASE_VERSION = 5
+        private const val DATABASE_VERSION = 6
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
