@@ -29,8 +29,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 
 @Composable
 fun SiswaCard(
@@ -128,28 +128,31 @@ fun SiswaCard(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
 
-                OutlinedButton(
+                IconButton(
                     onClick = onEdit
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit"
+                        contentDescription = "Edit",
+                        modifier = Modifier.size(24.dp)
                     )
                 }
+
                 Spacer(
-                    modifier = Modifier.size(8.dp)
+                    modifier = Modifier.size(4.dp)
                 )
-                OutlinedButton(
+
+                IconButton(
                     onClick = onDelete
                 ) {
-
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "Delete"
+                        contentDescription = "Delete",
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

@@ -1,10 +1,12 @@
 package com.example.pelatihankode.ui.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.ui.components.MenuCard
@@ -33,10 +38,10 @@ fun MenuScreen(
 ) {
 
     val menuItems = listOf(
-        "BELAJAR MORSE" to "belajar",
-        "BELAJAR ALFABET" to "alfabet",
-        "RIWAYAT" to "riwayat",
-        "ABOUT" to "about"
+        Triple("BELAJAR MORSE", "belajar", R.drawable.morse),
+        Triple("BELAJAR ALFABET", "alfabet", R.drawable.alfabet),
+        Triple("RIWAYAT", "riwayat", R.drawable.history),
+        Triple("ABOUT", "about", R.drawable.about)
     )
 
     Column(
@@ -65,10 +70,29 @@ fun MenuScreen(
         )
 
         siswa?.let {
+
             Spacer(modifier = Modifier.height(8.dp))
+
+            AsyncImage(
+                model = it.fotoUri,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(90.dp)
+                    .clip(CircleShape)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = it.nama,
                 fontSize = 20.sp,
+                fontFamily = DynapufSec,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                text = it.kelas,
+                fontSize = 16.sp,
                 fontFamily = DynapufSec,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -84,10 +108,11 @@ fun MenuScreen(
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            items(menuItems) { (title, route) ->
+            items(menuItems) { (title, route, imageRes) ->
 
                 MenuCard(
                     text = title,
+                    imageRes = imageRes,
                     onClick = {
 
                         when(route) {
@@ -109,5 +134,17 @@ fun MenuScreen(
                 )
             }
         }
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
+
+        Image(
+            painter = painterResource(
+                R.drawable.anakbelajar
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .size(150.dp)
+        )
     }
 }

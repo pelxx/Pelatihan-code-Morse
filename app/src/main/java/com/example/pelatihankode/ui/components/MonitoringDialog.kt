@@ -42,7 +42,10 @@ fun MonitoringDialog(
         ),
 
         title = {
-            Text("Smart Check (Student Monitoring and Readiness Tracking)")
+            Text(
+                "Smart Check (Student Monitoring and Readiness Tracking)",
+                fontFamily = Dynapuf
+            )
         },
 
         text = {
@@ -57,10 +60,14 @@ fun MonitoringDialog(
                         bpm = it.filter { c ->
                             c.isDigit()
                         }
+                            .take(3)
                     },
 
                     label = {
-                        Text("BPM")
+                        Text(
+                            text = "BPM",
+                            fontFamily = DynapufSec
+                        )
                     },
 
                     keyboardOptions = KeyboardOptions(
@@ -78,10 +85,14 @@ fun MonitoringDialog(
                         spo2 = it.filter { c ->
                             c.isDigit()
                         }
+                            .take(3)
                     },
 
                     label = {
-                        Text("SpO₂")
+                        Text(
+                            text = "SpO₂",
+                            fontFamily = DynapufSec
+                        )
                     },
 
                     keyboardOptions = KeyboardOptions(
@@ -109,7 +120,10 @@ fun MonitoringDialog(
                 }
             ) {
 
-                Text("LANJUT")
+                Text(
+                    text = "LANJUT",
+                    fontFamily = DynapufSec
+                )
             }
         },
 
@@ -119,7 +133,10 @@ fun MonitoringDialog(
                 onClick = onDismiss
             ) {
 
-                Text("BATAL")
+                Text(
+                    text = "BATAL",
+                    fontFamily = DynapufSec
+                )
             }
         }
     )

@@ -128,7 +128,6 @@ class AppDatabase private constructor(
     companion object {
         const val TABLE_MORSE = "morse"
         const val TABLE_SISWA = "siswa"
-
         const val COLUMN_HURUF = "huruf"
         const val COLUMN_MORSE = "morse"
         const val COLUMN_IMAGE_RES = "imageRes"
@@ -149,7 +148,7 @@ class AppDatabase private constructor(
         const val COLUMN_BPM = "bpm"
         const val COLUMN_SPO2 = "spo2"
         private const val DATABASE_NAME = "morse_database.db"
-        private const val DATABASE_VERSION = 6
+        private const val DATABASE_VERSION = 7
 
         @Volatile
         private var INSTANCE: AppDatabase? = null

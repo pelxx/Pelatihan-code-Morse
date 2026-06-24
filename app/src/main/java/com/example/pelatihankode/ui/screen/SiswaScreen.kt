@@ -40,7 +40,11 @@ import com.example.pelatihankode.ui.components.MonitoringDialog
 import com.example.pelatihankode.ui.components.SiswaCard
 import com.example.pelatihankode.ui.components.SiswaDialog
 import com.example.pelatihankode.ui.theme.AppBackgroundGradient
-
+import com.example.pelatihankode.data.local.AppDatabase
+import com.example.pelatihankode.data.local.RiwayatEntity
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 val Dynapuf = FontFamily(
     Font(R.font.dynapufprimary)
@@ -63,6 +67,9 @@ fun SiswaScreen(
     }
 
     val context = LocalContext.current
+    val database = remember {
+        AppDatabase.getDatabase(context)
+    }
     var siswaHapus by remember {
         mutableStateOf<SiswaEntity?>(null)
     }
@@ -363,6 +370,25 @@ fun SiswaScreen(
                     showBpmWarning = true
 
                 } else {
+
+                    val tanggal = SimpleDateFormat(
+                        "dd/MM/yyyy HH:mm",
+                        Locale("id", "ID")
+                    ).format(Date())
+
+                    database.riwayatDao().insertRiwayat(
+
+                        RiwayatEntity(
+
+                            siswaId = selectedSiswa!!.id,
+
+                            tanggal = tanggal,
+
+                            bpm = bpm,
+
+                            spo2 = spo2
+                        )
+                    )
 
                     navController.navigate(
                         "menu/${selectedSiswa!!.id}"

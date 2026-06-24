@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,119 +81,121 @@ fun RiwayatScreen(
         isLoading = false
     }
 
-    if (isLoading) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = AppBackgroundGradient
+                )
+            )
+            .padding(24.dp),
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = AppBackgroundGradient
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(
+            modifier = Modifier.height(8.dp)
+        )
+        Text(
+            text = "RIWAYAT",
+            fontFamily = DynapufMenu,
+            fontSize = 36.sp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
 
-            CircularProgressIndicator()
-        }
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
 
-        return
-    }
-
-    if (riwayatList.isEmpty()) {
-
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = AppBackgroundGradient
-                    )
-                ),
-            contentAlignment = Alignment.Center
-        ) {
+        selectedSiswa?.let {
 
             Text(
-                text = "Belum ada riwayat",
-                color = MaterialTheme.colorScheme.onBackground
+                text = it.nama,
+                fontSize = 22.sp,
+                fontFamily = DynapufSec
+            )
+
+            Text(
+                text = "Umur : ${it.umur} Tahun",
+                fontFamily = DynapufSec
+            )
+
+            Text(
+                text = "Kelas : ${it.kelas}",
+                fontFamily = DynapufSec
             )
         }
 
-    } else {
+        Spacer(
+            modifier = Modifier.height(16.dp)
+        )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = AppBackgroundGradient
-                    )
-                )
-                .padding(16.dp),
+        when {
 
-            verticalArrangement =
-                Arrangement.spacedBy(12.dp)
-        ) {
+            isLoading -> {
 
-            items(
-                items = riwayatList,
-                key = {
-                    it.id
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-            ) { item ->
+            }
 
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
+            riwayatList.isEmpty() -> {
 
-                    elevation =
-                        CardDefaults.cardElevation(
-                            defaultElevation = 4.dp
-                        ),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Belum ada riwayat",
+                        fontFamily = DynapufSec
                     )
+                }
+            }
+
+            else -> {
+
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+
+                    verticalArrangement =
+                        Arrangement.spacedBy(12.dp)
                 ) {
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
+                    items(
+                        riwayatList,
+                        key = { it.id }
+                    ) { item ->
 
-                        Column(
-                            modifier = Modifier.padding(16.dp)
+                        Card(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
 
-                            selectedSiswa?.let {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
 
                                 Text(
-                                    text = it.nama,
-                                    fontSize = 22.sp
+                                    text = item.tanggal,
+                                    fontFamily = DynapufSec
+                                )
+
+                                Spacer(
+                                    modifier = Modifier.height(8.dp)
                                 )
 
                                 Text(
-                                    text = "Umur : ${it.umur} Tahun"
+                                    text = "BPM : ${item.bpm ?: "-"}",
+                                    fontFamily = DynapufSec
                                 )
 
                                 Text(
-                                    text = "Kelas : ${it.kelas}"
+                                    text = "SpO₂ : ${item.spo2 ?: "-"}",
+                                    fontFamily = DynapufSec
                                 )
                             }
-
-                            Text(
-                                text = item.tanggal,
-                                fontSize = 16.sp
-                            )
-
-                            Spacer(
-                                modifier = Modifier.height(8.dp)
-                            )
-                            Text(
-                                text = "BPM : ${item.bpm ?: "-"}"
-                            )
-
-                            Text(
-                                text = "SpO2 : ${item.spo2 ?: "-"}"
-                            )
                         }
                     }
                 }
@@ -203,3 +203,4 @@ fun RiwayatScreen(
         }
     }
 }
+
