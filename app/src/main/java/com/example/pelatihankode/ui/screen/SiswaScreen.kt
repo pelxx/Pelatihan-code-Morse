@@ -370,52 +370,54 @@ fun SiswaScreen(
 
                 showMonitoringDialog = false
 
-                if ((bpm ?: 0) > 100) {
+                val siswa = selectedSiswa ?: return@MonitoringDialog
 
-                    showBpmWarning = true
+                val tanggal = SimpleDateFormat(
+                    "dd/MM/yyyy HH:mm",
+                    Locale.forLanguageTag("id-ID")
+                ).format(Date())
 
-                } else {
-                    val siswa = selectedSiswa ?: return@MonitoringDialog
-                    val tanggal = SimpleDateFormat(
-                        "dd/MM/yyyy HH:mm",
-                        Locale.forLanguageTag("id-ID")
-                    ).format(Date())
-                    val status = when {
+                val status = when {
 
-                        spo2 != null && spo2 < 90 ->
-                            "Hipoksemia"
+                    spo2 != null && spo2 < 90 -> "Hipoksemia"
 
-                        bpm != null && bpm > 100 && (spo2 ?: 100) >= 95 ->
-                            "Takikardia"
+                    bpm != null && bpm > 100 -> "Takikardia"
 
-                        bpm != null && bpm < 60 && (spo2 ?: 100) >= 95 ->
-                            "Bradikardia"
+                    bpm != null && bpm < 60 -> "Bradikardia"
 
-                        bpm != null &&
-                                spo2 != null &&
-                                bpm in 60..100 &&
-                                spo2 >= 95 ->
-                            "Normal"
+                    bpm != null &&
+                            spo2 != null &&
+                            bpm in 60..100 &&
+                            spo2 >= 95 -> "Normal"
 
-                        else ->
-                            "Perlu Observasi"
-                    }
-                    scope.launch {
-                        withContext(Dispatchers.IO) {
-                            database.riwayatDao().insertRiwayat(RiwayatEntity(
+                    else -> "Perlu Observasi"
+                }
+
+                scope.launch {
+
+                    withContext(Dispatchers.IO) {
+
+                        database.riwayatDao().insertRiwayat(
+
+                            RiwayatEntity(
                                 siswaId = siswa.id,
                                 tanggal = tanggal,
                                 bpm = bpm,
                                 spo2 = spo2,
                                 status = status
                             )
-                            )
-                            android.util.Log.d(
-                                "RIWAYAT",
-                                "Insert id = $id"
-                            )
-                        }
+                        )
+                    }
+
+                    if ((bpm ?: 0) > 100) {
+
+                        showBpmWarning = true
+
+                    } else {
+
                         navController.navigate("menu/${siswa.id}")
+
+                        selectedSiswa = null
                     }
                 }
             }
