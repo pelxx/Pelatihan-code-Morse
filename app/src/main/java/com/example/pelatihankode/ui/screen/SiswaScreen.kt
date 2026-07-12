@@ -1,6 +1,7 @@
 package com.example.pelatihankode.ui.screen
 
 
+import android.R.attr.id
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.rememberCoroutineScope
 import com.example.pelatihankode.R
 import com.example.pelatihankode.data.local.SiswaEntity
 import com.example.pelatihankode.ui.components.BpmWarningDialog
@@ -42,6 +44,9 @@ import com.example.pelatihankode.ui.components.SiswaDialog
 import com.example.pelatihankode.ui.theme.AppBackgroundGradient
 import com.example.pelatihankode.data.local.AppDatabase
 import com.example.pelatihankode.data.local.RiwayatEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -61,7 +66,6 @@ fun SiswaScreen(
     onEditSiswa: (SiswaEntity) -> Unit,
     onDeleteSiswa: (Long) -> Unit
 ) {
-
     var editedSiswa by remember {
         mutableStateOf<SiswaEntity?>(null)
     }
@@ -87,6 +91,7 @@ fun SiswaScreen(
     var showBpmWarning by remember {
         mutableStateOf(false)
     }
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -370,31 +375,48 @@ fun SiswaScreen(
                     showBpmWarning = true
 
                 } else {
-
+                    val siswa = selectedSiswa ?: return@MonitoringDialog
                     val tanggal = SimpleDateFormat(
                         "dd/MM/yyyy HH:mm",
-                        Locale("id", "ID")
+                        Locale.forLanguageTag("id-ID")
                     ).format(Date())
+                    val status = when {
 
-                    database.riwayatDao().insertRiwayat(
+                        spo2 != null && spo2 < 90 ->
+                            "Hipoksemia"
 
-                        RiwayatEntity(
+                        bpm != null && bpm > 100 && (spo2 ?: 100) >= 95 ->
+                            "Takikardia"
 
-                            siswaId = selectedSiswa!!.id,
+                        bpm != null && bpm < 60 && (spo2 ?: 100) >= 95 ->
+                            "Bradikardia"
 
-                            tanggal = tanggal,
+                        bpm != null &&
+                                spo2 != null &&
+                                bpm in 60..100 &&
+                                spo2 >= 95 ->
+                            "Normal"
 
-                            bpm = bpm,
-
-                            spo2 = spo2
-                        )
-                    )
-
-                    navController.navigate(
-                        "menu/${selectedSiswa!!.id}"
-                    )
-
-                    selectedSiswa = null
+                        else ->
+                            "Perlu Observasi"
+                    }
+                    scope.launch {
+                        withContext(Dispatchers.IO) {
+                            database.riwayatDao().insertRiwayat(RiwayatEntity(
+                                siswaId = siswa.id,
+                                tanggal = tanggal,
+                                bpm = bpm,
+                                spo2 = spo2,
+                                status = status
+                            )
+                            )
+                            android.util.Log.d(
+                                "RIWAYAT",
+                                "Insert id = $id"
+                            )
+                        }
+                        navController.navigate("menu/${siswa.id}")
+                    }
                 }
             }
         )

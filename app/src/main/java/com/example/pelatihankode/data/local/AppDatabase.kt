@@ -23,9 +23,14 @@ class AppDatabase private constructor(
         oldVersion: Int,
         newVersion: Int
     ) {
+        if (oldVersion < 10) {
+            // Migration to remove 'skor' column
+            db.execSQL("DROP TABLE IF EXISTS $TABLE_RIWAYAT")
+        }
         createTables(db)
         ensureSiswaFotoUriColumn(db)
         ensureSiswaUmurColumn(db)
+        ensureRiwayatStatusColumn(db)
     }
 
     fun morseDao(): MorseDao = morseDao
@@ -61,7 +66,8 @@ class AppDatabase private constructor(
                  $COLUMN_RIWAYAT_SISWA_ID INTEGER NOT NULL,
                  $COLUMN_TANGGAL TEXT NOT NULL,
                  $COLUMN_BPM INTEGER,
-                 $COLUMN_SPO2 INTEGER
+                 $COLUMN_SPO2 INTEGER,
+                 $COLUMN_STATUS TEXT NOT NULL
     )
     """.trimIndent()
         )
@@ -125,6 +131,44 @@ class AppDatabase private constructor(
             )
         }
     }
+
+    private fun ensureRiwayatStatusColumn(
+        db: SQLiteDatabase
+    ) {
+
+        val cursor = db.rawQuery(
+            "PRAGMA table_info($TABLE_RIWAYAT)",
+            null
+        )
+
+        val hasStatusColumn = cursor.use {
+
+            var found = false
+
+            while (it.moveToNext()) {
+
+                val columnName =
+                    it.getString(
+                        it.getColumnIndexOrThrow("name")
+                    )
+
+                if (columnName == COLUMN_STATUS) {
+
+                    found = true
+                    break
+                }
+            }
+
+            found
+        }
+
+        if (!hasStatusColumn) {
+
+            db.execSQL(
+                "ALTER TABLE $TABLE_RIWAYAT ADD COLUMN $COLUMN_STATUS TEXT NOT NULL DEFAULT ''"
+            )
+        }
+    }
     companion object {
         const val TABLE_MORSE = "morse"
         const val TABLE_SISWA = "siswa"
@@ -147,8 +191,9 @@ class AppDatabase private constructor(
 
         const val COLUMN_BPM = "bpm"
         const val COLUMN_SPO2 = "spo2"
+        const val COLUMN_STATUS = "status"
         private const val DATABASE_NAME = "morse_database.db"
-        private const val DATABASE_VERSION = 7
+        private const val DATABASE_VERSION = 12
 
         @Volatile
         private var INSTANCE: AppDatabase? = null

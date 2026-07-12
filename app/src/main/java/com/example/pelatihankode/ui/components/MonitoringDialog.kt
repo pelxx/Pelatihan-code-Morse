@@ -26,12 +26,15 @@ fun MonitoringDialog(
     var bpm by remember {
         mutableStateOf("")
     }
-
     var spo2 by remember {
         mutableStateOf("")
     }
+    val bpmInt = bpm.toIntOrNull()
+
+    val spo2Int = spo2.toIntOrNull()
+
     val isValid =
-        bpm.isNotBlank() && spo2.isNotBlank()
+        bpmInt in 30..220 && spo2Int in 70..100
 
     AlertDialog(
 
@@ -57,17 +60,29 @@ fun MonitoringDialog(
                     value = bpm,
 
                     onValueChange = {
-                        bpm = it.filter { c ->
-                            c.isDigit()
-                        }
+                        bpm = it.filter(Char::isDigit)
                             .take(3)
                     },
 
+                    isError = bpm.isNotEmpty() &&
+                            bpmInt !in 30..220,
+
                     label = {
                         Text(
-                            text = "BPM",
+                            "BPM",
                             fontFamily = DynapufSec
                         )
+                    },
+
+                    supportingText = {
+
+                        if (
+                            bpm.isNotEmpty() &&
+                            bpmInt !in 30..200
+                        ) {
+
+                            Text("Rentang BPM: 30–200")
+                        }
                     },
 
                     keyboardOptions = KeyboardOptions(
@@ -82,17 +97,29 @@ fun MonitoringDialog(
                     value = spo2,
 
                     onValueChange = {
-                        spo2 = it.filter { c ->
-                            c.isDigit()
-                        }
+                        spo2 = it.filter(Char::isDigit)
                             .take(3)
                     },
 
+                    isError = spo2.isNotEmpty() &&
+                            spo2Int !in 70..100,
+
                     label = {
                         Text(
-                            text = "SpO₂",
+                            "SpO₂",
                             fontFamily = DynapufSec
                         )
+                    },
+
+                    supportingText = {
+
+                        if (
+                            spo2.isNotEmpty() &&
+                            spo2Int !in 70..100
+                        ) {
+
+                            Text("Rentang SpO₂: 70–100%")
+                        }
                     },
 
                     keyboardOptions = KeyboardOptions(

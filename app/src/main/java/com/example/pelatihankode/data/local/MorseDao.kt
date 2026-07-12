@@ -27,18 +27,6 @@ class MorseDao(
         return items
     }
 
-
-    fun countMorse(): Int {
-        val cursor = database.readableDatabase.rawQuery(
-            "SELECT COUNT(*) FROM ${AppDatabase.TABLE_MORSE}",
-            null
-        )
-
-        return cursor.use {
-            if (it.moveToFirst()) it.getInt(0) else 0
-        }
-    }
-
     fun insertAll(items: List<MorseEntity>) {
         val writableDatabase = database.writableDatabase
 

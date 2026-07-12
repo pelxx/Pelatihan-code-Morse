@@ -10,5 +10,7 @@ data class RiwayatEntity(
 
     val bpm: Int?,
 
-    val spo2: Int?
+    val spo2: Int?,
+
+    val status: String
 )

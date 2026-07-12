@@ -1,7 +1,5 @@
 package com.example.pelatihankode.data.local
 
-import com.example.pelatihankode.data.local.HurufMorse
-
 data class MorseEntity(
     val huruf: String,
     val morse: String,

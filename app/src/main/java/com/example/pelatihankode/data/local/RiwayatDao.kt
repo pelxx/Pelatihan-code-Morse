@@ -118,6 +118,11 @@ class RiwayatDao(
                 getColumnIndexOrThrow(
                     AppDatabase.COLUMN_SPO2
                 )
+            ),
+            status = getString(
+                getColumnIndexOrThrow(
+                    AppDatabase.COLUMN_STATUS
+                )
             )
         )
     }
@@ -146,6 +151,11 @@ class RiwayatDao(
             put(
                 AppDatabase.COLUMN_SPO2,
                 riwayat.spo2
+            )
+
+            put(
+                AppDatabase.COLUMN_STATUS,
+                riwayat.status
             )
         }
     }

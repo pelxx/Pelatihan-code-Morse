@@ -195,6 +195,11 @@ fun RiwayatScreen(
                                     text = "SpO₂ : ${item.spo2 ?: "-"}",
                                     fontFamily = DynapufSec
                                 )
+
+                                Text(
+                                    text = "Status : ${item.status}",
+                                    fontFamily = DynapufSec
+                                )
                             }
                         }
                     }
