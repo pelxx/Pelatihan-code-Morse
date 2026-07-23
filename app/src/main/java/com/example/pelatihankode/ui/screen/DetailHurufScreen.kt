@@ -118,8 +118,8 @@ fun DetailHurufScreen(
         ) {
 
             Text(
-                text = "PLAY SOUND",
-                fontSize = 20.sp
+                text = "PLAY SUARA",
+                fontFamily = DynapufSec
             )
         }
         DisposableEffect(Unit) {

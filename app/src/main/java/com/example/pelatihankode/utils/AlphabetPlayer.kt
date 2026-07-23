@@ -13,7 +13,9 @@ object AlphabetPlayer {
         huruf: String
     ) {
 
-        stop()
+        if (mediaPlayer?.isPlaying == true) {
+            return
+        }
 
         val soundRes = alphabetAudioMap[huruf.uppercase()]
             ?: return

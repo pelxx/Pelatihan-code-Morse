@@ -12,14 +12,17 @@ object MorseVibrator {
     private const val DOT = UNIT
     private const val DASH = UNIT * 3
     private const val GAP = UNIT
-
+    private var isVibrating = false
     fun vibrateMorse(
         context: Context,
         morse: String
     ) {
+        if (isVibrating) {
+            return
+        }
 
+        isVibrating = true
         val pattern = mutableListOf<Long>()
-
         // delay awal
         pattern.add(0)
 
@@ -38,7 +41,7 @@ object MorseVibrator {
                 pattern.add(GAP)
             }
         }
-
+        val totalDuration = pattern.sum()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 
             val vibrator = context
@@ -83,5 +86,10 @@ object MorseVibrator {
                 )
             }
         }
+        android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+
+            isVibrating = false
+
+        }, totalDuration)
     }
 }

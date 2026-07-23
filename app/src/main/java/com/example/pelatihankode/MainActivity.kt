@@ -25,6 +25,8 @@ import com.example.pelatihankode.ui.screen.MenuScreen
 import com.example.pelatihankode.ui.screen.DetailHurufScreen
 import com.example.pelatihankode.ui.screen.RiwayatScreen
 import com.example.pelatihankode.ui.screen.SiswaScreen
+import com.example.pelatihankode.ui.screen.SopScreen
+import com.example.pelatihankode.ui.screen.SplashScreen
 import com.example.pelatihankode.ui.theme.PelatihanKODETheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -74,9 +76,14 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(
                     navController = navController,
-                    startDestination = "siswa"
+                    startDestination = "splash"
                 ) {
-
+                    composable("splash") {
+                        SplashScreen(navController)
+                    }
+                    composable("sop") {
+                        SopScreen(navController)
+                    }
                     composable("siswa") {
                         SiswaScreen(
                             navController = navController,
@@ -171,16 +178,6 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(
-                        "quiz/{siswaId}"
-                    ) { backStackEntry ->
-
-                        val siswaId =
-                            backStackEntry.arguments
-                                ?.getString("siswaId")
-                                ?.toLongOrNull() ?: 0L
-                    }
-
-                    composable(
                         "riwayat/{siswaId}"
                     ) { backStackEntry ->
 
@@ -188,7 +185,6 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments
                                 ?.getString("siswaId")
                                 ?.toLongOrNull() ?: 0L
-
                         val selectedSiswa =
                             siswaItems.find {
                                 it.id == siswaId
@@ -198,11 +194,9 @@ class MainActivity : ComponentActivity() {
                             siswa = selectedSiswa
                         )
                     }
-
                     composable("about") {
                         AboutScreen()
                     }
-
                     composable("detail/{huruf}") { backStackEntry ->
 
                         val huruf = backStackEntry.arguments
@@ -213,7 +207,6 @@ class MainActivity : ComponentActivity() {
                             it.huruf == huruf
 
                         }
-
                         selectedHuruf?.let {
 
                             DetailHurufScreen(it)
@@ -221,9 +214,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-
             }
         }
     }
-
 }
